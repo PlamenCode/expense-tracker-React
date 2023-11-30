@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+const baseUrl = 'http://localhost:4200/ExpenseTracker/auth';
 
-export const Login = () => {
+export const Login = ({ setAuthenticate }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -9,9 +10,18 @@ export const Login = () => {
         if(email == '' || password == ''){
             return;
         }
-        console.log(email, password);
-        localStorage.setItem('user', {email, password});
-        window.location.reload();
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({email, password})
+        }
+        fetch(`${baseUrl}/login`, requestOptions)
+            .then(res => res.json())
+            .then(res => {
+                localStorage.setItem('auth', res.token);
+                setAuthenticate(true);
+            })
+            .catch(err => console.log(err))
     }
   return (
     <form onSubmit={onSubmit}>

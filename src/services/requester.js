@@ -25,7 +25,7 @@ const requester = async (method, url, data) => {
     return result;
 };
 
-const requestFactory = () => {
+export const requestFactory = () => {
     return{
         get: requester.bind( null, 'GET' ),
         post: requester.bind( null, 'POST' ),

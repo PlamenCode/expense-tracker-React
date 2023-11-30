@@ -15,7 +15,7 @@ function App() {
     const [authenticate, setAuthenticate] = useState(false);
 
     useEffect(() => {
-        if(localStorage.getItem('user')){
+        if(localStorage.getItem('auth')){
             setAuthenticate(true);
         } else{
             setAuthenticate(false);
@@ -33,7 +33,7 @@ function App() {
             <TransactionList />
             <AddTransaction />
         </div>
-        : <Login />
+        : <Login setAuthenticate={setAuthenticate}/>
         }
     </GlobalProvider>
   )
