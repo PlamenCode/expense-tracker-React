@@ -1,15 +1,17 @@
 import "./App.css";
+import React, { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import { Header } from './components/Header';
-import { Balance } from './components/Balance';
-import { IncomeExpences } from './components/IncomeExpences';
-import { TransactionList } from './components/TransactionList';
-import { AddTransaction } from './components/AddTransaction';
-
-import {  GlobalProvider } from './contexts/GlobalState';
+import { MainPage } from "./components/MainPageComponents/MainPage";
 import { Login } from "./components/Login";
 import { Navbar } from "./components/Navbar";
-import { useEffect, useState } from "react";
+
+import { GlobalProvider } from './contexts/GlobalState';
+import { RouteGuardUser } from "./guards/RouteGuardUser";
+import { RouteGuardGuest } from './guards/RouteGuardGuest';
+import { Register } from "./components/Register";
+
 
 
 function App() {
@@ -29,19 +31,19 @@ function App() {
     };
 
   return (
-    //To finish routing 
     <GlobalProvider>
         <Navbar providerObj={providerObj}/>
         <Header/>
-        {authenticate ?
-            <div className="container">
-                <Balance />
-                <IncomeExpences />
-                <TransactionList />
-                <AddTransaction />
-            </div>
-        : <Login providerObj={providerObj}/>
-    }
+        <Routes>
+            <Route element={ <RouteGuardGuest />}>
+                <Route path="/login" element={ <Login providerObj={providerObj}/>} />
+                <Route path="/register" element={ <Register providerObj={providerObj}/>} />
+            </Route>
+            <Route element={ <RouteGuardUser /> }>
+                <Route path="/" element={ <MainPage /> }/>
+           </Route>
+    
+    </Routes>
     </GlobalProvider>
   )
 }

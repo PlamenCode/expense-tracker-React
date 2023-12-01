@@ -8,9 +8,13 @@ export const Navbar = ({ providerObj }) => {
     }
   return (
     <div className='navbar'>
-        <Link to={'/login'}>Login</Link>
-        <Link to={'/register'}>Register</Link>
-        <button onClick={onLogout}>Logout</button>
+        { providerObj.authenticate 
+            ? <button onClick={onLogout}>Logout</button>
+            : <>
+                <Link to={'/login'}>Login</Link>
+                <Link to={'/register'}>Register</Link>
+            </>
+        }
     </div>
   )
 }

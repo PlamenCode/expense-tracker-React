@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+
 const baseUrl = 'http://localhost:4200/ExpenseTracker/auth';
 
-export const Login = ({ providerObj }) => {
+export const Register = ({ providerObj }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [repass, setRepass] = useState('');
     const navigate = useNavigate();
 
     function onSubmit(e){
         e.preventDefault();
-        if(email == '' || password == ''){
+        if(email === '' || password === '' || repass === ''){
             return;
         }
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({email, password})
+            body: JSON.stringify({ email, password, repass })
         }
-        fetch(`${baseUrl}/login`, requestOptions)
+        fetch(`${baseUrl}/register`, requestOptions)
             .then(res => res.json())
             .then(res => {
                 localStorage.setItem('auth', res.token);
@@ -28,7 +30,7 @@ export const Login = ({ providerObj }) => {
     }
   return (
     <form onSubmit={onSubmit}>
-        <h3>Login Form</h3>
+        <h3>Register Form</h3>
         <div className="form-control">
             <label htmlFor="email">Email</label>
             <input onChange={(e) => setEmail(e.target.value)} 
@@ -39,7 +41,12 @@ export const Login = ({ providerObj }) => {
             <input onChange={(e) => setPassword(e.target.value)} 
                 type="password" name='password' placeholder='*****'/>
         </div>
-        <button type='submit'>Login</button>
+        <div className="form-control">
+            <label htmlFor="repass">Repeat Password</label>
+            <input onChange={(e) => setRepass(e.target.value)} 
+                type="password" name='repass' placeholder='*****'/>
+        </div>
+        <button type='submit'>Register</button>
     </form>
   )
 }
