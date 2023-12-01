@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 const baseUrl = 'http://localhost:4200/ExpenseTracker/auth';
 
-export const Login = ({ setAuthenticate }) => {
+export const Login = ({ providerObj }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -19,7 +19,7 @@ export const Login = ({ setAuthenticate }) => {
             .then(res => res.json())
             .then(res => {
                 localStorage.setItem('auth', res.token);
-                setAuthenticate(true);
+                providerObj.setAuthenticate(true);
             })
             .catch(err => console.log(err))
     }

@@ -10,6 +10,11 @@ export default (state, action) => {
                 ...state,
                 transactions: [ action.payload, ...state.transactions ]
             };
+        case 'UPDATE_AUTH':
+            return {
+                ...state,
+                authenticate: action.payload
+            };
 
         default: return state ;
     }

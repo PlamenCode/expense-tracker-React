@@ -1,5 +1,4 @@
 import "./App.css";
-import { useEffect, useState } from "react";
 
 import { Header } from './components/Header';
 import { Balance } from './components/Balance';
@@ -7,8 +6,10 @@ import { IncomeExpences } from './components/IncomeExpences';
 import { TransactionList } from './components/TransactionList';
 import { AddTransaction } from './components/AddTransaction';
 
-import { GlobalProvider } from './contexts/GlobalState';
+import {  GlobalProvider } from './contexts/GlobalState';
 import { Login } from "./components/Login";
+import { Navbar } from "./components/Navbar";
+import { useEffect, useState } from "react";
 
 
 function App() {
@@ -20,21 +21,27 @@ function App() {
         } else{
             setAuthenticate(false);
         }
-        console.log(authenticate);
     }, []);
+     
+    const providerObj = {
+        authenticate,
+        setAuthenticate
+    };
 
   return (
+    //To finish routing 
     <GlobalProvider>
-        <Header authenticate={authenticate} setAuthenticate={setAuthenticate}/>
-        {authenticate ? 
-        <div className="container">
-            <Balance />
-            <IncomeExpences />
-            <TransactionList />
-            <AddTransaction />
-        </div>
-        : <Login setAuthenticate={setAuthenticate}/>
-        }
+        <Navbar providerObj={providerObj}/>
+        <Header/>
+        {authenticate ?
+            <div className="container">
+                <Balance />
+                <IncomeExpences />
+                <TransactionList />
+                <AddTransaction />
+            </div>
+        : <Login providerObj={providerObj}/>
+    }
     </GlobalProvider>
   )
 }
