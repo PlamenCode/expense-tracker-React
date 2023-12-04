@@ -9,9 +9,11 @@ export const AddTransaction = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        const fullDate = new Date().toJSON();
+        const id = (fullDate.slice(0, 10) + fullDate.slice(11, 19)).replaceAll('-', '').replaceAll(':', '');
 
         const newTransaction = {
-            id: Math.floor(Math.random() * 100000000),
+            id,
             text,
             amount: +amount
         };

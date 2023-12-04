@@ -15,6 +15,11 @@ export default (state, action) => {
                 ...state,
                 authenticate: action.payload
             };
+        case 'RESET-STATE':
+            return {
+                ...state,
+                transactions: []
+            };
 
         default: return state ;
     }

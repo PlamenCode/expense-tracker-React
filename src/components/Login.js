@@ -21,6 +21,7 @@ export const Login = ({ providerObj }) => {
             .then(res => res.json())
             .then(res => {
                 localStorage.setItem('auth', res.token);
+                localStorage.setItem('userId', res.userId);
                 providerObj.setAuthenticate(true);
                 navigate('/');
             })
