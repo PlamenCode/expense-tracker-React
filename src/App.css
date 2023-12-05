@@ -150,3 +150,16 @@ input[type='number'] {
 .list li:hover .delete-btn {
   opacity: 1;
 }
+
+.navbar{
+    display: flex;
+    gap: 40px;
+}
+.navbar a{
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+    border: 1px solid black;
+    padding: 4px 8px;
+    border-radius: 8px;
+}

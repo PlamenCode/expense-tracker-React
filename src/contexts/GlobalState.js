@@ -14,6 +14,7 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
+
     useEffect(() => {
         const requestOptions = {
             method: 'GET',
@@ -31,27 +32,39 @@ export const GlobalProvider = ({ children }) => {
                 });
             })
             .catch(err => console.log(err))
-    }, [])
+    }, [state])
 
     //Action
     function deleteTransaction(id){
-
-        //TODO FINISH DELETE REQUEST AND UPDATING OF STATE
-        // AND DELETE IN THE REST SERVICE TO FIND BY USER ID AND FILTER EXPENSES
-        // TO REMOVE THE EXPENSE WTH THE GIVEN ID
-
-        // const requestOptions = {
-        //     method: 'DELETE',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ user: localStorage.getItem('userId')})
-        // }
-        // fetch(`${baseUrl}/${id}`, requestOptions)
-        //     .then(res => res.json())
-        //     .then(res => {
-        //         console.log(res);
-        //     })
-        //     .catch(err => console.log(err))
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: localStorage.getItem('userId')})
+        }
+        fetch(`${baseUrl}/${id}`, requestOptions)
+            .then(res => res.json())
+            .then(res => {})
+            .catch(err => console.log(err))
     };
+
+    function updateState(){
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        }
+        fetch(`${baseUrl}/${localStorage.getItem('userId')}`, requestOptions)
+            .then(res => res.json())
+            .then(res => {
+                dispatch({ type: 'RESET-STATE' });
+                res[0].expenses.forEach(element => {
+                    dispatch({
+                        type: 'ADD_TRNSACTION',
+                        payload: element
+                    })
+                });
+            })
+            .catch(err => console.log(err))
+    }
 
     function addTransaction(transaction){
         const requestOptions = {
@@ -62,11 +75,12 @@ export const GlobalProvider = ({ children }) => {
         fetch(`${baseUrl}`, requestOptions)
             .then(res => res.json())
             .then(res => {
-                dispatch({
-                    type: 'ADD_TRNSACTION',
-                    payload: res.expenses[res.expenses.length -1]
+                //No longer needed since we added useEffect();
+                // dispatch({
+                    //     type: 'ADD_TRNSACTION',
+                    //     payload: res.expenses[res.expenses.length -1]
+                // }) 
                 })
-            })
             .catch(err => console.log(err))
     };
 
@@ -75,6 +89,7 @@ export const GlobalProvider = ({ children }) => {
                 transactions: state.transactions,
                 deleteTransaction,
                 addTransaction,
+                updateState
             }}>
             {children}
         </GlobalContext.Provider>
